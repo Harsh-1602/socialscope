@@ -18,14 +18,11 @@ export function Navigation() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex-shrink-0">
-            <Link 
-              to="/" 
-              className="flex items-center group hover:opacity-80 transition-opacity duration-200"
-            >
-              <div className="flex space-x-1 mr-2">
-                <div className="w-1 h-6 bg-blue-500 rounded-full"></div>
-                <div className="w-1 h-4 bg-purple-500 rounded-full"></div>
-                <div className="w-1 h-2 bg-blue-500 rounded-full"></div>
+            <Link to="/" className="flex items-center">
+              <div className="flex items-center space-x-1 mr-3">
+                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                <div className="w-4 h-4 bg-purple-500 rotate-45"></div>
+                <div className="w-2 h-5 bg-blue-500 rounded-t-full"></div>
               </div>
               <span className="text-xl font-bold text-white group-hover:text-blue-400 transition-colors duration-200">
                 SocialScope
