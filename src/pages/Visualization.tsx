@@ -38,24 +38,20 @@ function Visualization() {
       })
       .then(csvString => {
         console.log('Raw CSV string:', csvString); // Debug raw CSV data
-        const results = Papa.parse<DataRow>(csvString, {
+        const results = Papa.parse(csvString, {
           header: true,
           dynamicTyping: true,
           skipEmptyLines: true,
           complete: (results) => {
             console.log('Parsed results:', results); // Debug parsed results
+            if (results.data && results.data.length > 0) {
+              setData(results.data as DataRow[]); // Add type assertion here
+            }
           },
-          error: (error) => {
+          error: (error: Error) => {
             console.error('CSV parsing error:', error);
           }
         });
-        
-        if (results.data && results.data.length > 0) {
-          console.log('First row of data:', results.data[0]); // Debug first row
-          setData(results.data);
-        } else {
-          console.error('No data parsed from CSV');
-        }
       })
       .catch(error => {
         console.error('Error loading CSV:', error);
@@ -66,8 +62,6 @@ function Visualization() {
   if (data.length === 0) {
     return <div>Loading data...</div>;
   }
-
-  const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff7300', '#0088FE', '#00C49F'];
 
   // Filter data based on selected post type
   const filteredData = selectedPostType 

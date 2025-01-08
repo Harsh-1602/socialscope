@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Send, Bot } from 'lucide-react';
+import { Send, Bot, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 function Analysis() {
@@ -7,6 +7,7 @@ function Analysis() {
     { type: 'bot', content: 'Hello! I can help you analyze your social media posts. What would you like to know?' }
   ]);
   const [input, setInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const runFlow = async (message: string) => {
     try {
@@ -35,6 +36,7 @@ function Analysis() {
     if (!input.trim()) return;
 
     setMessages(prev => [...prev, { type: 'user', content: input }]);
+    setIsLoading(true);
 
     try {
       const response = await runFlow(input);
@@ -54,9 +56,10 @@ function Analysis() {
         type: 'bot',
         content: 'Sorry, I encountered an error processing your request.'
       }]);
+    } finally {
+      setIsLoading(false);
+      setInput('');
     }
-
-    setInput('');
   };
 
   return (
@@ -95,6 +98,27 @@ function Analysis() {
               </motion.div>
             </div>
           ))}
+          
+          {isLoading && (
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex items-start space-x-2 mb-4"
+            >
+              <Bot className="h-6 w-6 text-blue-400" />
+              <div className="p-3 rounded-lg bg-slate-700">
+                <motion.div 
+                  className="flex items-center space-x-2"
+                  initial={{ opacity: 0.5 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ repeat: Infinity, duration: 1 }}
+                >
+                  <Loader2 className="h-5 w-5 animate-spin text-blue-400" />
+                  <span className="text-gray-100">Analyzing...</span>
+                </motion.div>
+              </div>
+            </motion.div>
+          )}
         </div>
 
         <form onSubmit={handleSubmit} className="flex space-x-2">
@@ -104,12 +128,16 @@ function Analysis() {
             onChange={(e) => setInput(e.target.value)}
             placeholder="Ask about your social media analysis..."
             className="flex-1 p-2 bg-slate-700 border border-gray-600 text-white placeholder-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            disabled={isLoading}
           />
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             type="submit"
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            disabled={isLoading}
+            className={`px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+              isLoading ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
           >
             <Send className="h-5 w-5" />
           </motion.button>
