@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { Navigation } from '../components/Navigation';
+import ThreeBackground from '../components/ThreeBackground';
+import BackgroundAnimation from '../components/BackgroundAnimation';
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
   PieChart, Pie, Cell
@@ -179,129 +182,135 @@ function Visualization() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <h1 className="text-3xl font-bold text-white mb-8">
-        Social Media Analytics Dashboard
-        {selectedPostType && <span className="text-blue-400"> - {selectedPostType}</span>}
-      </h1>
+    <>
+      <ThreeBackground />
+      <div className="min-h-screen bg-gradient-to-b from-slate-900/90 via-slate-800/90 to-slate-900/90">
+        <Navigation />
+        <div className="pt-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <h1 className="text-3xl font-bold text-white mb-8">
+            Social Media Analytics Dashboard
+            {selectedPostType && <span className="text-blue-400"> - {selectedPostType}</span>}
+          </h1>
 
-      {/* Post Type Distribution */}
-      <div className="bg-slate-800/50 backdrop-blur-lg border border-gray-700 p-6 rounded-lg shadow-xl mb-6">
-        <h2 className="text-xl font-semibold text-white mb-4">Post Type Distribution</h2>
-        <div className="h-[400px]">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={postTypeData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="PostType" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar 
-                dataKey="Engagement" 
-                fill="#8884d8" 
-                onClick={handlePostTypeClick}
-                cursor="pointer"
-                opacity={selectedPostType ? 0.7 : 1}
-              />
-            </BarChart>
-          </ResponsiveContainer>
+          {/* Post Type Distribution */}
+          <div className="bg-slate-800/50 backdrop-blur-lg border border-gray-700 p-6 rounded-lg shadow-xl mb-6">
+            <h2 className="text-xl font-semibold text-white mb-4">Post Type Distribution</h2>
+            <div className="h-[400px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={postTypeData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="PostType" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Bar 
+                    dataKey="Engagement" 
+                    fill="#8884d8" 
+                    onClick={handlePostTypeClick}
+                    cursor="pointer"
+                    opacity={selectedPostType ? 0.7 : 1}
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Platform Distribution */}
+            <div className="bg-slate-800/50 backdrop-blur-lg border border-gray-700 p-6 rounded-lg shadow-xl">
+              <h2 className="text-xl font-semibold text-white mb-4">Platform Distribution</h2>
+              <div className="h-[300px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={platformData}
+                      cx="50%"
+                      cy="50%"
+                      labelLine={false}
+                      label={renderCustomizedLabel}
+                      outerRadius={100}
+                      dataKey="value"
+                      nameKey="name"
+                    >
+                      {platformData.map((entry, index) => (
+                        <Cell 
+                          key={`cell-${index}`} 
+                          fill={
+                            entry.name === 'LinkedIn' ? '#8884d8' : 
+                            entry.name === 'Facebook' ? '#82ca9d' : 
+                            entry.name === 'Instagram' ? '#ffc658' :
+                            '#ff7300'
+                          } 
+                        />
+                      ))}
+                    </Pie>
+                    <Legend 
+                      verticalAlign="bottom" 
+                      height={36}
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            {/* Gender Distribution */}
+            <div className="bg-slate-800/50 backdrop-blur-lg border border-gray-700 p-6 rounded-lg shadow-xl">
+              <h2 className="text-xl font-semibold text-white mb-4">Gender Distribution</h2>
+              <div className="h-[300px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={genderChartData}
+                      cx="50%"
+                      cy="50%"
+                      labelLine={false}
+                      label={renderCustomizedLabel}
+                      outerRadius={100}
+                      dataKey="value"
+                      nameKey="name"
+                    >
+                      {genderChartData.map((entry, index) => (
+                        <Cell 
+                          key={`cell-${index}`} 
+                          fill={
+                            entry.name === 'Male' ? '#8884d8' : 
+                            entry.name === 'Female' ? '#82ca9d' : 
+                            '#ffc658'
+                          } 
+                        />
+                      ))}
+                    </Pie>
+                    <Legend 
+                      verticalAlign="bottom" 
+                      height={36}
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            {/* Age Distribution */}
+            <div className="bg-slate-800/50 backdrop-blur-lg border border-gray-700 p-6 rounded-lg shadow-xl">
+              <h2 className="text-xl font-semibold text-white mb-4">Age Distribution Engagement</h2>
+              <div className="h-[300px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={ageData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="ageGroup" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="likes" name="Likes" fill="#8884d8" />
+                    <Bar dataKey="comments" name="Comments" fill="#82ca9d" />
+                    <Bar dataKey="shares" name="Shares" fill="#ffc658" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Updated Platform Distribution */}
-        <div className="bg-slate-800/50 backdrop-blur-lg border border-gray-700 p-6 rounded-lg shadow-xl">
-          <h2 className="text-xl font-semibold text-white mb-4">Platform Distribution</h2>
-          <div className="h-[300px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={platformData}
-                  cx="50%"
-                  cy="50%"
-                  labelLine={false}
-                  label={renderCustomizedLabel}
-                  outerRadius={100}
-                  dataKey="value"
-                  nameKey="name"
-                >
-                  {platformData.map((entry, index) => (
-                    <Cell 
-                      key={`cell-${index}`} 
-                      fill={
-                        entry.name === 'LinkedIn' ? '#8884d8' : 
-                        entry.name === 'Facebook' ? '#82ca9d' : 
-                        entry.name === 'Instagram' ? '#ffc658' :
-                        '#ff7300'
-                      } 
-                    />
-                  ))}
-                </Pie>
-                <Legend 
-                  verticalAlign="bottom" 
-                  height={36}
-                />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        {/* Updated Gender Distribution */}
-        <div className="bg-slate-800/50 backdrop-blur-lg border border-gray-700 p-6 rounded-lg shadow-xl">
-          <h2 className="text-xl font-semibold text-white mb-4">Gender Distribution</h2>
-          <div className="h-[300px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={genderChartData}
-                  cx="50%"
-                  cy="50%"
-                  labelLine={false}
-                  label={renderCustomizedLabel}
-                  outerRadius={100}
-                  dataKey="value"
-                  nameKey="name"
-                >
-                  {genderChartData.map((entry, index) => (
-                    <Cell 
-                      key={`cell-${index}`} 
-                      fill={
-                        entry.name === 'Male' ? '#8884d8' : 
-                        entry.name === 'Female' ? '#82ca9d' : 
-                        '#ffc658'
-                      } 
-                    />
-                  ))}
-                </Pie>
-                <Legend 
-                  verticalAlign="bottom" 
-                  height={36}
-                />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        {/* Updated Age Distribution */}
-        <div className="bg-slate-800/50 backdrop-blur-lg border border-gray-700 p-6 rounded-lg shadow-xl">
-          <h2 className="text-xl font-semibold text-white mb-4">Age Distribution Engagement</h2>
-          <div className="h-[300px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={ageData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="ageGroup" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="likes" name="Likes" fill="#8884d8" />
-                <Bar dataKey="comments" name="Comments" fill="#82ca9d" />
-                <Bar dataKey="shares" name="Shares" fill="#ffc658" />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-      </div>
-    </div>
+    </>
   );
 }
 

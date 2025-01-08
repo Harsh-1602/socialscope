@@ -23,7 +23,7 @@ import {
   Instagram
 } from 'lucide-react';
 import ThreeBackground from '../components/ThreeBackground';
-import FloatingElements from '../components/FloatingElements';
+import { Navigation } from '../components/Navigation';
 
 function Home() {
   const features = [
@@ -101,10 +101,9 @@ function Home() {
     <>
       <ThreeBackground />
       <div className="min-h-screen bg-gradient-to-b from-slate-900/90 via-slate-800/90 to-slate-900/90">
+        <Navigation />
         {/* Hero Section */}
         <section className="relative overflow-hidden pt-20 pb-16 sm:pb-24">
-          <FloatingElements position="left" />
-          <FloatingElements position="right" />
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
@@ -173,10 +172,18 @@ function Home() {
                   key={index}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="p-6 bg-slate-800/50 backdrop-blur-lg rounded-lg border border-gray-700"
+                  whileHover={{ 
+                    scale: 1.05,
+                    boxShadow: "0 0 25px rgba(59, 130, 246, 0.5)",
+                    transition: { duration: 0.2 }
+                  }}
+                  className="p-6 bg-slate-800/50 backdrop-blur-lg rounded-lg border border-gray-700 
+                           transform transition-all duration-200 hover:border-blue-500/50
+                           hover:bg-slate-800/70"
                 >
-                  <div className="mb-4">{feature.icon}</div>
+                  <div className="mb-4 transform transition-transform duration-200 hover:scale-110">
+                    {feature.icon}
+                  </div>
                   <h3 className="text-xl font-semibold text-white mb-2">{feature.title}</h3>
                   <p className="text-gray-400">{feature.description}</p>
                 </motion.div>
@@ -194,10 +201,18 @@ function Home() {
                   key={index}
                   initial={{ scale: 0.9, opacity: 0 }}
                   whileInView={{ scale: 1, opacity: 1 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="text-center"
+                  whileHover={{ 
+                    scale: 1.1,
+                    boxShadow: "0 0 25px rgba(147, 51, 234, 0.5)",
+                    transition: { duration: 0.2 }
+                  }}
+                  className="text-center p-6 rounded-lg bg-slate-800/50 backdrop-blur-lg
+                           border border-gray-700 transform transition-all duration-200
+                           hover:border-purple-500/50 hover:bg-slate-800/70"
                 >
-                  <div className="flex justify-center mb-4">{stat.icon}</div>
+                  <div className="flex justify-center mb-4 transform transition-transform duration-200 hover:scale-110">
+                    {stat.icon}
+                  </div>
                   <div className="text-3xl font-bold text-white mb-2">{stat.value}</div>
                   <div className="text-gray-400">{stat.label}</div>
                 </motion.div>
