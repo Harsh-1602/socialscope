@@ -9,9 +9,11 @@ function Analysis() {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
   const runFlow = async (message: string) => {
     try {
-        const response = await fetch('http://localhost:5000/api/chat', {
+        const response = await fetch(`${API_URL}/api/chat`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
