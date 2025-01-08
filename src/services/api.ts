@@ -1,6 +1,4 @@
-const API_URL = process.env.NODE_ENV === 'production' 
-  ? 'https://socialscope-backend.onrender.com'  // Replace with your actual backend URL
-  : 'http://localhost:5000';
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
 export const analyzeSocialMedia = async (data: any) => {
     try {
