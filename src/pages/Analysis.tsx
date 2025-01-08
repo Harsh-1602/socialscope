@@ -1,0 +1,122 @@
+import React, { useState } from 'react';
+import { Send, Bot } from 'lucide-react';
+import { motion } from 'framer-motion';
+
+function Analysis() {
+  const [messages, setMessages] = useState([
+    { type: 'bot', content: 'Hello! I can help you analyze your social media posts. What would you like to know?' }
+  ]);
+  const [input, setInput] = useState('');
+
+  const runFlow = async (message: string) => {
+    try {
+        const response = await fetch('http://localhost:5000/api/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ message })
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Fetch error:', error);
+        throw error;
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!input.trim()) return;
+
+    setMessages(prev => [...prev, { type: 'user', content: input }]);
+
+    try {
+      const response = await runFlow(input);
+      
+      if (response && response.outputs && response.outputs[0]?.outputs[0]?.results?.message?.text) {
+        const messageText = response.outputs[0].outputs[0].results.message.text;
+        setMessages(prev => [...prev, {
+          type: 'bot',
+          content: messageText
+        }]);
+      } else {
+        throw new Error('Unexpected response format');
+      }
+    } catch (error) {
+      console.error('Error getting response:', error);
+      setMessages(prev => [...prev, {
+        type: 'bot',
+        content: 'Sorry, I encountered an error processing your request.'
+      }]);
+    }
+
+    setInput('');
+  };
+
+  return (
+    <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="bg-slate-800/50 backdrop-blur-lg border border-gray-700 rounded-lg shadow-xl p-6">
+        <h2 className="text-2xl font-bold text-white mb-6">Chat Analysis</h2>
+        
+        <div className="h-[500px] overflow-y-auto mb-4 p-4 bg-slate-900/50 rounded-lg">
+          {messages.map((message, index) => (
+            <div
+              key={index}
+              className={`flex ${
+                message.type === 'user' ? 'justify-end' : 'justify-start'
+              } mb-4`}
+            >
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+                className={`flex items-start space-x-2 max-w-[80%] ${
+                  message.type === 'user' ? 'flex-row-reverse space-x-reverse' : ''
+                }`}
+              >
+                <div
+                  className={`p-3 rounded-lg ${
+                    message.type === 'user'
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-slate-700 text-gray-100'
+                  }`}
+                >
+                  {message.content}
+                </div>
+                {message.type === 'bot' && (
+                  <Bot className="h-6 w-6 text-blue-400" />
+                )}
+              </motion.div>
+            </div>
+          ))}
+        </div>
+
+        <form onSubmit={handleSubmit} className="flex space-x-2">
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Ask about your social media analysis..."
+            className="flex-1 p-2 bg-slate-700 border border-gray-600 text-white placeholder-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            type="submit"
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <Send className="h-5 w-5" />
+          </motion.button>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+export default Analysis;
