@@ -1,14 +1,16 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import requests
+import os
 
 app = Flask(__name__)
 CORS(app)
 
-BASE_API_URL = "https://api.langflow.astra.datastax.com"
-LANGFLOW_ID = "5e42b37a-b5a6-48ea-a193-93e609f47e56"
-FLOW_ID = "edbcfc45-a3fd-41ae-8fd9-1a6eccf14f73"
-APPLICATION_TOKEN = "AstraCS:pqiLdkmcwqoRkSqalMPLUsCu:b2c53c0f0238b23d75ee4295da77a26f1bd3e5a617623bb736c8055ee0ad9d4e"
+# Use environment variables
+BASE_API_URL = os.getenv('BASE_API_URL', "https://api.langflow.astra.datastax.com")
+LANGFLOW_ID = os.getenv('LANGFLOW_ID', "5e42b37a-b5a6-48ea-a193-93e609f47e56")
+FLOW_ID = os.getenv('FLOW_ID', "edbcfc45-a3fd-41ae-8fd9-1a6eccf14f73")
+APPLICATION_TOKEN = os.getenv('APPLICATION_TOKEN')
 
 TWEAKS = {
     "Agent-YBzSb": {},
@@ -48,4 +50,5 @@ def chat():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(port=5000) 
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port) 
