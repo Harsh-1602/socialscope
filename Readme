@@ -24,19 +24,18 @@ Uses GPT to convert data into insightful and user-friendly insights.
 
 ##Setup Instructions
 1. Clone the Repository
-bash
-Copy code
-git clone https://github.com/yourusername/social-scope.git
+
+git clone https://github.com/Harsh-1602/socialscope.git
 cd social-scope
+
 2. Install Dependencies
 Install Python dependencies:
-bash
-Copy code
+
 pip install -r requirements.txt
 Install Langflow:
-bash
-Copy code
+
 pip install langflow
+
 3. Set Up DataStax Astra DB
 Sign up for a free Astra DB account.
 Create a new database and import the Kaggle Social Media Analytics dataset.
@@ -44,7 +43,7 @@ Ensure the schema includes fields like post_id, post_type, likes, shares, commen
 4. Configure Database Connection
 Update the config.py file with your Astra DB credentials:
 python
-Copy code
+
 ASTRA_DB_ID = "your_database_id"
 ASTRA_DB_REGION = "your_region"
 ASTRA_DB_KEYSPACE = "your_keyspace"
@@ -52,8 +51,7 @@ ASTRA_DB_CLIENT_ID = "your_client_id"
 ASTRA_DB_CLIENT_SECRET = "your_client_secret"
 5. Load Langflow Workflow
 Open Langflow UI:
-bash
-Copy code
+
 langflow
 Import the workflow file social_scope_workflow.json provided in this repository.
 6. Run the Project
