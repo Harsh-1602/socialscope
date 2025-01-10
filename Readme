@@ -1,16 +1,16 @@
 # Social Scope
 _Analyze social media performance with Langflow, DataStax Astra DB, and GPT._
 
-##Overview
+## Overview
 Social Scope is a social media analytics tool designed to analyze post engagement data and generate actionable insights. By integrating Langflow for workflow automation, DataStax Astra DB for efficient data storage and querying, and GPT for natural language insights, Social Scope provides an end-to-end solution for understanding and optimizing social media strategies.
 
-##Features
+## Features
 *Dynamic Querying*: Accepts user input to fetch engagement data from Astra DB based on post type (carousel, reels, static images, etc.).
 *Data Analysis*: Calculates average engagement metrics such as likes, shares, and comments for each post type.
 *Actionable Insights*: Uses GPT to present meaningful insights, such as "Reels drive 2x more comments compared to static posts."
 *Kaggle Dataset Integration*: Utilizes real-world social media engagement data for analysis.
 
-##Workflow Architecture
+## Workflow Architecture
 Input:
 Users provide a query (e.g., What is the engagement for reels posts?).
 Agent:
